@@ -26,11 +26,9 @@ furnace=clone_node("default:furnace")
 		local inv=meta:get_inventory()
 		if direction.y==1 then
 			return inv:room_for_item("fuel",stack)
-		elseif direction.y==-1 then
-			return inv:room_for_item("src",stack)
 		else
-			return 0
-	end
+			return inv:room_for_item("src",stack)
+		end
 	end,
 	input_inventory="dst"}
 	furnace.after_place_node= function(pos)
@@ -59,10 +57,8 @@ furnace=clone_node("default:furnace_active")
 		local inv=meta:get_inventory()
 		if direction.y==1 then
 			return inv:room_for_item("fuel",stack)
-		elseif direction.y==-1 then
-			return inv:room_for_item("src",stack)
 		else
-			return 0
+			return inv:room_for_item("src",stack)
 		end
 	end,
 	input_inventory="dst"}
