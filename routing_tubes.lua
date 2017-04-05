@@ -9,6 +9,25 @@ minetest.register_craft( {
 	},
 })
 
+pipeworks.register_tube("pipeworks:broken_tube", {
+	description = "Broken Tube (you hacker you)",
+	-- Needs textures
+	node_def = {
+		drop = "pipeworks:tube_1",
+		groups = {not_in_creative_inventory = 1, tubedevice_receiver = 1},
+		tube = {
+			insert_object = function(pos, node, stack, direction)
+				minetest.item_drop(stack, nil, pos)
+				return ItemStack("")
+			end,
+			can_insert = function(pos,node,stack,direction)
+				return true
+			end,
+			priority = 50,
+		}
+	}
+})
+
 -- the high priority tube is a low-cpu replacement for sorting tubes in situations
 -- where players would use them for simple routing (turning off paths)
 -- without doing actual sorting, like at outputs of tubedevices that might both accept and eject items

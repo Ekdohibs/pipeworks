@@ -77,6 +77,20 @@ local function go_next(pos, velocity, stack)
 		end
 	end
 
+	local gt = minetest.get_gametime()
+	if cmeta:get_int("last_item_time") == gt then
+		local k = cmeta:get_int("num_item_sec")
+		if k > 10 then
+			-- Kill tube
+			minetest.swap_node(pos, {name = "pipeworks:broken_tube_1"})
+			pipeworks.scan_for_tube_objects(pos)
+		end
+		cmeta:set_int("num_item_sec", k + 1)
+	else
+		cmeta:set_int("last_item_time", gt)
+		cmeta:set_int("num_item_sec", 1)
+	end
+
 	if not next_positions[1] then
 		return false, nil
 	end
