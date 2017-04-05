@@ -31,6 +31,9 @@ function pipeworks.notvel(tbl, vel)
 	return tbl2
 end
 
+local tube_last_times = {}
+local tube_item_count = {}
+
 local function go_next(pos, velocity, stack)
 	local next_positions = {}
 	local max_priority = 0
@@ -78,17 +81,18 @@ local function go_next(pos, velocity, stack)
 	end
 
 	local gt = minetest.get_gametime()
-	if cmeta:get_int("last_item_time") == gt then
-		local k = cmeta:get_int("num_item_sec")
+	local h = minetest.hash_node_position(pos)
+	if tube_last_times[h] == gt then
+		local k = tube_item_count[h] or 0
 		if k > 10 then
 			-- Kill tube
 			minetest.swap_node(pos, {name = "pipeworks:broken_tube_1"})
 			pipeworks.scan_for_tube_objects(pos)
 		end
-		cmeta:set_int("num_item_sec", k + 1)
+		tube_item_count[h] = k + 1
 	else
-		cmeta:set_int("last_item_time", gt)
-		cmeta:set_int("num_item_sec", 1)
+		tube_last_times[h] = gt
+		tube_item_count[h] = 1
 	end
 
 	if not next_positions[1] then
